@@ -3,6 +3,7 @@ from .models import Game, Tags, DownloadableContent
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import ALLGamesSerializer, GameSerializer, ALLTagsSerializer, TagsSerializer, \
     ALLDownloadableContentSerializer, DownloadableContentSerializer
+from datetime import date, timedelta
 
 
 class AllGamesApiView(generics.ListAPIView):
@@ -30,6 +31,16 @@ class AllDiscountGamesApiView(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'developer__title', 'tags__title']
     permission_classes = (AllowAny,)
+
+
+class AllNewGamesApiView(generics.ListAPIView):
+    """Представление всех новых игр"""
+    queryset = Game.objects.filter(new_game=True)
+    serializer_class = ALLGamesSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'developer__title', 'tags__title']
+    permission_classes = (AllowAny,)
+
 
 
 class GamesApiView(generics.RetrieveAPIView):

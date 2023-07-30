@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.core.validators import FileExtensionValidator, MaxValueValidator
 from django.db import models
 from developers.models import DeveloperCompany
@@ -8,7 +9,7 @@ class Game(models.Model):
     title = models.CharField(max_length=80, null=False, blank=False, verbose_name='Название игры')
     short_description = models.CharField(max_length=80, null=False, blank=False, verbose_name="Краткое описание игры")
     full_description = models.CharField(max_length=300, null=False, blank=False, verbose_name="Полное описание игры")
-    price = models.IntegerField(default=0, null=False, blank=False, verbose_name="Цена игры")
+    price = models.IntegerField(default=1000, null=False, blank=False, verbose_name="Цена игры")
     sale = models.BooleanField(default=False, null=False, blank=False, verbose_name="Скидка")
     discount = models.IntegerField(default=0, null=False, blank=False, validators=[MaxValueValidator(100)],
                                    verbose_name="Процент скидки")
@@ -17,9 +18,11 @@ class Game(models.Model):
                                                verbose_name="Минимальные системные требования")
     req_system_requirements = models.CharField(max_length=150, null=False, blank=False,
                                                verbose_name="Рекомендуемые системные требования")
-    release_date = models.DateField(null=False, blank=False, verbose_name="Дата выхода")
+    release_date = models.DateTimeField(default=datetime.now(), blank=False, verbose_name="Дата выхода")
     # language = models.CharField(max_length=10, null=False, blank=False, verbose_name="Цена игры")
     # comments = models.CharField(max_length=10, null=False, blank=False, verbose_name="Цена игры")
+    new_game = models.BooleanField(default=False, null=False, blank=False, verbose_name="Новинка")
+    New_game_date = models.DateTimeField(default=datetime.now() + timedelta(days=10), blank=False, verbose_name="Дата выхода")
 
     downloadable_content = models.ManyToManyField("DownloadableContent", blank=True, verbose_name="Загружаемый контент",
                                                   related_name='game')
@@ -40,11 +43,21 @@ class Game(models.Model):
         verbose_name_plural = "Игры"
 
     def save(self, *args, **kwargs):
-
-        if self.sale and self.price > 100:
+        if self.sale and self.price > 100 and self.New_game_date.date() > self.release_date.date():
             self.price_discount = (self.price * (100 - self.discount) / 100)
+            self.new_game = True
+        elif self.sale and self.price > 100 and self.New_game_date.date() < self.release_date.date():
+            self.price_discount = (self.price * (100 - self.discount) / 100)
+            self.new_game = False
+        elif self.sale == False and self.price > 100 and self.New_game_date.date() > self.release_date.date():
+            self.price_discount = (self.price * (100 - self.discount) / 100)
+            self.new_game = True
+        elif self.sale == False and self.price > 100 and self.New_game_date.date() < self.release_date.date():
+            self.price_discount = (self.price * (100 - self.discount) / 100)
+            self.new_game = False
         else:
             self.sale = False
+            self.new_game = False
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -76,6 +89,7 @@ class DownloadableContent(models.Model):
     min_system_requirements = models.CharField(max_length=150, null=False, blank=False,
                                                verbose_name="Минимальные системные требования")
     release_date = models.DateField(null=False, blank=False, verbose_name="Дата выхода")
+    new_game = models.BooleanField(default=False, null=False, blank=False, verbose_name="Новинка")
 
     tags = models.ManyToManyField(Tags, blank=False, verbose_name="Метки", related_name='dls')
     developer = models.ForeignKey(DeveloperCompany, on_delete=models.CASCADE, null=False, blank=False,
