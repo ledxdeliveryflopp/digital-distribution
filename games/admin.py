@@ -4,7 +4,7 @@ from .models import Game, Tags, DownloadableContent
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
-    readonly_fields = ['price_discount', 'new_game', 'stop']
+    readonly_fields = ['price_discount', 'new_game', 'New_game_date']
 
 
 @admin.register(Tags)

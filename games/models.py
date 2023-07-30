@@ -22,7 +22,8 @@ class Game(models.Model):
     # language = models.CharField(max_length=10, null=False, blank=False, verbose_name="Цена игры")
     # comments = models.CharField(max_length=10, null=False, blank=False, verbose_name="Цена игры")
     new_game = models.BooleanField(default=False, null=False, blank=False, verbose_name="Новинка")
-    New_game_date = models.DateTimeField(default=datetime.now() + timedelta(days=10), blank=False, verbose_name="Дата выхода")
+    New_game_date = models.DateTimeField(default=datetime.now() + timedelta(days=10), blank=False,
+                                         verbose_name="Срок новинки")
 
     downloadable_content = models.ManyToManyField("DownloadableContent", blank=True, verbose_name="Загружаемый контент",
                                                   related_name='game')
