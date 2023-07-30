@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "steam"
+version = "1.0"
+description = "API like a steam"
+authors = ["LedxDeliveryFlopp"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+djangorestframework = "^3.14.0"
+django-cleanup = "^8.0.0"
+pillow = "9.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
