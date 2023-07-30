@@ -47,5 +47,6 @@ class DownloadableContentSerializer(ModelSerializer):
 
     class Meta:
         model = DownloadableContent
-        fields = ['title', 'short_description', 'full_description', 'price', 'min_system_requirements', 'release_date',
-                  'tags', 'developer', 'title_image', 'images', 'trailer', 'game']
+        fields = ['title', 'short_description', 'full_description', 'price', 'sale', 'discount', 'price_discount',
+                  'min_system_requirements', 'release_date', 'tags', 'developer', 'title_image', 'images', 'trailer',
+                  'game']

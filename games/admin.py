@@ -4,7 +4,7 @@ from .models import Game, Tags, DownloadableContent
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ['price_discount']
 
 
 @admin.register(Tags)
@@ -14,5 +14,5 @@ class TagsAdmin(admin.ModelAdmin):
 
 @admin.register(DownloadableContent)
 class DownloadableContentAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ['price_discount']
 
