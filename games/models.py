@@ -41,10 +41,10 @@ class Game(models.Model):
 
     def save(self, *args, **kwargs):
 
-        if self.sale and self.price != 0:
+        if self.sale and self.price > 100:
             self.price_discount = (self.price * (100 - self.discount) / 100)
         else:
-            pass
+            self.sale = False
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -94,10 +94,11 @@ class DownloadableContent(models.Model):
         verbose_name_plural = "Загружаемый контент"
 
     def save(self, *args, **kwargs):
-        if self.sale:
+
+        if self.sale and self.price > 100:
             self.price_discount = (self.price * (100 - self.discount) / 100)
         else:
-            pass
+            self.sale = False
         super().save(*args, **kwargs)
 
     def __str__(self):

@@ -7,7 +7,7 @@ class ALLGamesSerializer(ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ['title', 'title_image', 'price']
+        fields = ['title', 'title_image', 'price', 'sale', 'discount', 'price_discount']
 
 
 class GameSerializer(ModelSerializer):

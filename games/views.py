@@ -22,11 +22,14 @@ class AllFreeGamesApiView(generics.ListAPIView):
     search_fields = ['title', 'developer__title', 'tags__title']
     permission_classes = (AllowAny,)
 
-    # def get_queryset(self):
-    #     if Game.price == 0:
-    #         return Game.objects.filter(price=0)
-    #     else:
-    #         return Game.objects.exclude(price=0)
+
+class AllDiscountGamesApiView(generics.ListAPIView):
+    """Представление всех игр по скидке"""
+    queryset = Game.objects.filter(sale=True)
+    serializer_class = ALLGamesSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'developer__title', 'tags__title']
+    permission_classes = (AllowAny,)
 
 
 class GamesApiView(generics.RetrieveAPIView):
