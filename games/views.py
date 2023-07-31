@@ -1,9 +1,7 @@
 from rest_framework import generics, filters
-from .models import Game, Tags, DownloadableContent
+from .models import Game, Tags
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .serializers import ALLGamesSerializer, GameSerializer, ALLTagsSerializer, TagsSerializer, \
-    ALLDownloadableContentSerializer, DownloadableContentSerializer
-from datetime import date, timedelta
+from .serializers import ALLGamesSerializer, GameSerializer, ALLTagsSerializer, TagsSerializer
 
 
 class AllGamesApiView(generics.ListAPIView):
@@ -42,7 +40,6 @@ class AllNewGamesApiView(generics.ListAPIView):
     permission_classes = (AllowAny,)
 
 
-
 class GamesApiView(generics.RetrieveAPIView):
     """Представление отдельной игры"""
     queryset = Game.objects.all()
@@ -50,33 +47,4 @@ class GamesApiView(generics.RetrieveAPIView):
     permission_classes = (AllowAny,)
 
 
-class AllTagsApiView(generics.ListAPIView):
-    """Представление всех меток"""
-    queryset = Tags.objects.all()
-    serializer_class = ALLTagsSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['title']
-    permission_classes = (AllowAny,)
 
-
-class TagsApiView(generics.RetrieveAPIView):
-    """Представление отдельной метки"""
-    queryset = Tags.objects.all()
-    serializer_class = TagsSerializer
-    permission_classes = (AllowAny,)
-
-
-class AllDownloadableContentApiView(generics.ListAPIView):
-    """Представление всех дополнительных загружаемых контентов"""
-    queryset = DownloadableContent.objects.all()
-    serializer_class = ALLDownloadableContentSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['title']
-    permission_classes = (AllowAny,)
-
-
-class DownloadableContentApiView(generics.RetrieveAPIView):
-    """Представление отдельного загружаемого контента"""
-    queryset = DownloadableContent.objects.all()
-    serializer_class = DownloadableContentSerializer
-    permission_classes = (AllowAny,)
