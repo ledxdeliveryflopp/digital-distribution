@@ -5,28 +5,27 @@ from developers.models import DeveloperCompany
 from dls.models import DownloadableContent
 from language.models import LanguageText, LanguageSubtitles, LanguageVoice
 from news.models import News
+from region.models import Region
 from tags.models import Tags
 
 
 class Game(models.Model):
     """Модель игры"""
-    title = models.CharField(max_length=80, null=False, blank=False, verbose_name='Название игры')
-    short_description = models.CharField(max_length=80, null=False, blank=False, verbose_name="Краткое описание игры")
-    full_description = models.CharField(max_length=300, null=False, blank=False, verbose_name="Полное описание игры")
-    price = models.IntegerField(default=1000, null=False, blank=False, verbose_name="Цена игры")
-    sale = models.BooleanField(default=False, null=False, blank=False, verbose_name="Скидка")
-    discount = models.IntegerField(default=0, null=False, blank=False, validators=[MaxValueValidator(100)],
+    title = models.CharField(max_length=80, verbose_name='Название игры')
+    short_description = models.CharField(max_length=80, verbose_name="Краткое описание игры")
+    full_description = models.CharField(max_length=300, verbose_name="Полное описание игры")
+    price = models.IntegerField(default=1000, verbose_name="Цена игры")
+    sale = models.BooleanField(default=False, verbose_name="Скидка")
+    discount = models.IntegerField(default=0, validators=[MaxValueValidator(100)],
                                    verbose_name="Процент скидки")
-    price_discount = models.IntegerField(default=0, null=False, blank=False, verbose_name="Цена игры со скидкой")
-    min_system_requirements = models.CharField(max_length=150, null=False, blank=False,
-                                               verbose_name="Минимальные системные требования")
-    req_system_requirements = models.CharField(max_length=150, null=False, blank=False,
-                                               verbose_name="Рекомендуемые системные требования")
-    release_date = models.DateTimeField(default=datetime.now(), blank=False, verbose_name="Дата выхода")
-    New_game_date = models.DateTimeField(default=datetime.now() + timedelta(days=10), blank=False,
-                                         verbose_name="Срок новинки")
-    new_game = models.BooleanField(default=False, null=False, blank=False, verbose_name="Новинка")
+    price_discount = models.IntegerField(default=0, verbose_name="Цена игры со скидкой")
+    min_system_requirements = models.CharField(max_length=150, verbose_name="Минимальные системные требования")
+    req_system_requirements = models.CharField(max_length=150, verbose_name="Рекомендуемые системные требования")
+    release_date = models.DateTimeField(default=datetime.now(), verbose_name="Дата выхода")
+    New_game_date = models.DateTimeField(default=datetime.now() + timedelta(days=10), verbose_name="Срок новинки")
+    new_game = models.BooleanField(default=False, verbose_name="Новинка")
 
+    region = models.ManyToManyField(Region, blank=False, verbose_name="Регион", related_name="games")
     mews = models.ManyToManyField(News, blank=True, verbose_name="Новости игры", related_name="game")
     language_text = models.ManyToManyField(LanguageText, blank=False, verbose_name="Язык текста")
     language_voice = models.ManyToManyField(LanguageVoice, blank=False, verbose_name="Язык озвучки")

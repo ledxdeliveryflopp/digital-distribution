@@ -5,6 +5,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v2/', include('region.urls', namespace='region')),
+    path('api/v2/', include('user.urls', namespace='user')),
     path('api/v2/', include('language.urls', namespace='language')),
     path('api/v2/', include('tags.urls', namespace='tags')),
     path('api/v2/', include('games.urls', namespace='games')),

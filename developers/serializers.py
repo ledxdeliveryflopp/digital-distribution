@@ -15,4 +15,4 @@ class DeveloperCompanySerializer(ModelSerializer):
 
     class Meta:
         model = DeveloperCompany
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'games']

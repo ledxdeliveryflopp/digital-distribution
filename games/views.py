@@ -1,16 +1,21 @@
 from rest_framework import generics, filters
-from .models import Game, Tags
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from .serializers import ALLGamesSerializer, GameSerializer, ALLTagsSerializer, TagsSerializer
+from .models import Game
+from .serializers import ALLGamesSerializer, GameSerializer
 
 
 class AllGamesApiView(generics.ListAPIView):
     """Представление всех игр"""
-    queryset = Game.objects.all()
     serializer_class = ALLGamesSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'developer__title', 'tags__title']
-    permission_classes = (AllowAny,)
+
+    def get_queryset(self):
+        """Фильтрация игр по региону пользователя"""
+        if not self.request.user.is_authenticated:
+            return Game.objects.all()
+        else:
+            user_region = self.request.user.region
+            return Game.objects.filter(region=user_region)
 
 
 class AllFreeGamesApiView(generics.ListAPIView):
@@ -19,7 +24,6 @@ class AllFreeGamesApiView(generics.ListAPIView):
     serializer_class = ALLGamesSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'developer__title', 'tags__title']
-    permission_classes = (AllowAny,)
 
 
 class AllDiscountGamesApiView(generics.ListAPIView):
@@ -28,7 +32,6 @@ class AllDiscountGamesApiView(generics.ListAPIView):
     serializer_class = ALLGamesSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'developer__title', 'tags__title']
-    permission_classes = (AllowAny,)
 
 
 class AllNewGamesApiView(generics.ListAPIView):
@@ -37,14 +40,12 @@ class AllNewGamesApiView(generics.ListAPIView):
     serializer_class = ALLGamesSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'developer__title', 'tags__title']
-    permission_classes = (AllowAny,)
 
 
 class GamesApiView(generics.RetrieveAPIView):
     """Представление отдельной игры"""
     queryset = Game.objects.all()
     serializer_class = GameSerializer
-    permission_classes = (AllowAny,)
 
 
 
