@@ -6,11 +6,11 @@ from .serializers import DeveloperCompanySerializer, AllDeveloperCompanySerializ
 class AllDeveloperCompanyApiView(generics.ListAPIView):
     """Представление всеъ компаний"""
     queryset = DeveloperCompany.objects.all()
-    serializer_class = DeveloperCompanySerializer
+    serializer_class = AllDeveloperCompanySerializer
 
 
 class DeveloperCompanyApiView(generics.RetrieveAPIView):
     """Представление отдельной компании"""
     queryset = DeveloperCompany.objects.all()
-    serializer_class = AllDeveloperCompanySerializer
+    serializer_class = DeveloperCompanySerializer
 

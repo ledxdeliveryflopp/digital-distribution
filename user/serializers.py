@@ -1,5 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from .models import User
+from rest_framework.fields import CharField
 
 
 class AllUserSerializer(ModelSerializer):
@@ -16,3 +17,12 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+
+
+class RegisterSerializer(ModelSerializer):
+    """Сериалайзер регистрации"""
+    password = CharField(write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'password', 'avatar', 'region']

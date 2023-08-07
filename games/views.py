@@ -5,10 +5,17 @@ from .serializers import ALLGamesSerializer, GameSerializer
 
 class AllGamesApiView(generics.ListAPIView):
     """Представление всех игр"""
-    queryset = Game.objects.all()
     serializer_class = ALLGamesSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'developer__title', 'tags__title']
+
+    def get_queryset(self):
+        """Фильтрация игр по региону пользователя"""
+        if not self.request.user.is_authenticated:
+            return Game.objects.all()
+        else:
+            user_region = self.request.user.region
+            return Game.objects.filter(region=user_region)
 
 
 class AllFreeGamesApiView(generics.ListAPIView):

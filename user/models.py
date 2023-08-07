@@ -12,7 +12,7 @@ class User(AbstractUser):
     description = models.CharField(max_length=200, null=True, blank=True, verbose_name="Описание профиля")
     games = models.ManyToManyField(Game, blank=True, verbose_name="Игры на аккаунте")
 
-    Region = models.ForeignKey(Region, null=True, on_delete=models.SET_NULL, verbose_name="Регион")
+    region = models.ForeignKey(Region, null=True, on_delete=models.SET_NULL, verbose_name="Регион")
 
     avatar = models.ImageField(upload_to='avatar', default='avatar/default.png', null=True, blank=True,
                                verbose_name="Аватарка пользователя")
