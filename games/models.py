@@ -19,22 +19,28 @@ class Game(models.Model):
     discount = models.IntegerField(default=0, validators=[MaxValueValidator(100)],
                                    verbose_name="Процент скидки")
     price_discount = models.IntegerField(default=0, verbose_name="Цена игры со скидкой")
-    min_system_requirements = models.CharField(max_length=150, verbose_name="Минимальные системные требования")
-    req_system_requirements = models.CharField(max_length=150, verbose_name="Рекомендуемые системные требования")
+    min_system_requirements = models.CharField(max_length=150,
+                                               verbose_name="Минимальные системные требования")
+    req_system_requirements = models.CharField(max_length=150,
+                                               verbose_name="Рекомендуемые системные требования")
     release_date = models.DateTimeField(default=datetime.now(), verbose_name="Дата выхода")
-    New_game_date = models.DateTimeField(default=datetime.now() + timedelta(days=10), verbose_name="Срок новинки")
+    New_game_date = models.DateTimeField(default=datetime.now() + timedelta(days=10),
+                                         verbose_name="Срок новинки")
     new_game = models.BooleanField(default=False, verbose_name="Новинка")
 
     region = models.ManyToManyField(Region, blank=False, verbose_name="Регион", related_name="games")
     mews = models.ManyToManyField(News, blank=True, verbose_name="Новости игры", related_name="game")
     language_text = models.ManyToManyField(LanguageText, blank=False, verbose_name="Язык текста")
     language_voice = models.ManyToManyField(LanguageVoice, blank=False, verbose_name="Язык озвучки")
-    language_subtitles = models.ManyToManyField(LanguageSubtitles, blank=False, verbose_name="Язык субтитров")
-    downloadable_content = models.ManyToManyField(DownloadableContent, blank=True, verbose_name="Загружаемый контент",
+    language_subtitles = models.ManyToManyField(LanguageSubtitles, blank=False,
+                                                verbose_name="Язык субтитров")
+    downloadable_content = models.ManyToManyField(DownloadableContent, blank=True,
+                                                  verbose_name="Загружаемый контент",
                                                   related_name='game')
     tags = models.ManyToManyField(Tags, blank=False, verbose_name="Метки", related_name="games")
-    developer = models.ForeignKey(DeveloperCompany, on_delete=models.CASCADE, null=False, blank=False,
-                                  verbose_name="Компания разработчик", related_name="games")
+    developer = models.ForeignKey(DeveloperCompany, on_delete=models.CASCADE, null=False,
+                                  blank=False, verbose_name="Компания разработчик",
+                                  related_name="games")
 
     title_image = models.ImageField(upload_to='games/', blank=False, validators=[
         FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg'])],
